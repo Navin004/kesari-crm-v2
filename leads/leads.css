@@ -1,0 +1,9 @@
+/* =====================================================================================
+   LEADS PAGE — page-specific style overrides  (leads/leads.css)
+   Loaded after shared/shared.css, so anything here wins. Add Leads-only tweaks below —
+   e.g. a different Hot Lead row highlight, dashboard-only spacing, etc.
+===================================================================================== */
+
+/* Example: highlight the row background for Hot Lead status specifically on this page.
+.status-pill.Hot-Lead { font-weight: 900; }
+*/
