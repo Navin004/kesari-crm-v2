@@ -9,12 +9,14 @@ let LOADING = true;
 let LOAD_ERROR = null;
 
 const AppState = {
-  leadsSubtab: 'active',
+  leadsSubtab: 'hot',
   leadsAllView: false,
   leadsAllFilter: 'active',
   leadsSourceFilter: 'All Sources',
   leadsSearch: '',
   overlayLeadId: null,
+  // NEW
+  leadsDateFilter: 'all'
 };
 
 /* ---------------------------- BOOT ---------------------------- */
@@ -46,20 +48,45 @@ function render() {
 /* =====================================================================================
    LEADS DASHBOARD
 ===================================================================================== */
-function leadBuckets() {
-  const open = LEADS.filter(isOpenLead);
-  const hot = open.filter((l) => statusIn(l.status, ['Hot Lead']) || l.attempts >= 2);
-  const overdue = open.filter((l) => isOverdue(l.followUpDate));
-  const scheduledTomorrow = open.filter((l) => isTomorrow(l.followUpDate));
-  const converted = LEADS.filter((l) => statusIn(l.status, ENQUIRY_STATUSES));
-  return { open, hot, overdue, scheduledTomorrow, converted };
+function leadBuckets(data = LEADS) {
+
+  const open = data.filter(isOpenLead);
+
+  const hot = open.filter(
+    (l) => statusIn(l.status, ['Hot Lead']) || l.attempts >= 2
+  );
+
+  const overdue = open.filter(
+    (l) => isOverdue(l.followUpDate)
+  );
+
+  const scheduledTomorrow = open.filter(
+    (l) => isTomorrow(l.followUpDate)
+  );
+
+  const converted = data.filter(
+    (l) => statusIn(l.status, ENQUIRY_STATUSES)
+  );
+
+  return {
+    open,
+    hot,
+    overdue,
+    scheduledTomorrow,
+    converted
+  };
 }
 function renderLeadsDashboard() {
-  const b = leadBuckets();
-  const calledToday = LEADS.filter((l) => l.lastAttempt && isToday(l.lastAttempt)).length;
+  const filteredLeads = getFilteredLeadsByDate();
+  const b = leadBuckets(filteredLeads);
+  const calledToday = filteredLeads.filter(
+    l => l.lastAttempt && isToday(l.lastAttempt)
+  ).length;
   const pending = b.open.length;
   const convertedCount = b.converted.length;
-  const rate = LEADS.length ? ((convertedCount / LEADS.length) * 100).toFixed(1) : '0.0';
+  const rate = filteredLeads.length 
+    ? ((convertedCount / filteredLeads.length) * 100).toFixed(1) 
+    : '0.0';
 
   let items = { hot: b.hot, active: b.open, overdue: b.overdue, scheduled: b.scheduledTomorrow, converted: b.converted }[AppState.leadsSubtab] || b.open;
   let filtered = items.filter((l) => AppState.leadsSourceFilter === 'All Sources' || l.source === AppState.leadsSourceFilter);
@@ -78,15 +105,16 @@ function renderLeadsDashboard() {
       <td><button class="callbtn" onclick="event.stopPropagation();openLeadOverlay('${l.id}')" title="Call">📞</button></td>
     </tr>`).join('') || `<tr><td colspan="6"><div class="empty-row">No leads in this view.</div></td></tr>`;
 
-  const sources = ['All Sources', ...SOURCE_OPTIONS.filter((s) => LEADS.some((l) => l.source === s))];
+  const sources = ['All Sources', ...SOURCE_OPTIONS.filter((s) => filteredLeads.some((l) => l.source === s))];
 
   return `
     <div class="page-head">
       <div><h1>Leads Dashboard</h1><p>Live from Google Sheets — manage and track your assigned leads.</p></div>
       <div class="date-badge">📅 Today, ${fmtDate(now())}</div>
     </div>
+    ${renderDateButtons()}
     <div class="counters">
-      <div class="ccard"><div class="label">Total Records</div><div class="value">${LEADS.length}</div></div>
+      <div class="ccard"><div class="label">Total Records</div><div class="value">${filteredLeads.length}</div></div>
       <div class="ccard"><div class="label">Called today</div><div class="value">${calledToday}</div></div>
       <div class="ccard"><div class="label">Pending</div><div class="value">${pending}</div></div>
       <div class="ccard"><div class="label">Converted</div><div class="value">${convertedCount}</div></div>
@@ -114,19 +142,152 @@ function setLeadsSubtab(t) { AppState.leadsSubtab = t; render(); }
 function setSourceFilter(s) { AppState.leadsSourceFilter = s; render(); }
 function openAllLeadsView() { AppState.leadsAllView = true; render(); }
 
+
+// new
+// function getFilteredLeadsByDate() {
+//     const today = new Date();
+//     return LEADS.filter(l => {
+//         if(!l.dateReceived) return false;
+//         const d = new Date(l.dateReceived);
+//         switch(AppState.leadsDateFilter){
+//             case 'today':
+//                 return d.toDateString()===today.toDateString();
+//             case 'yesterday':
+//                 const y=new Date(today);
+//                 y.setDate(today.getDate()-1);
+//                 return d.toDateString()===y.toDateString();
+//             case 'week':
+//                 return (today-d)/(1000*60*60*24)<=7;
+//             case '15days':
+//                 return (today-d)/(1000*60*60*24)<=15;
+//             case 'month':
+//                 return d.getMonth()==today.getMonth()
+//                     && d.getFullYear()==today.getFullYear();
+//             case '3months':
+//                 return (today-d)/(1000*60*60*24)<=90;
+//             default:
+//                 return true;
+//         }
+//     });
+// }
+
+function getFilteredLeadsByDate(){
+
+    const today = new Date();
+
+    today.setHours(0,0,0,0);
+
+    return LEADS.filter(l=>{
+
+        if(!l.dateReceived) return false;
+
+        const d=new Date(l.dateReceived);
+
+        d.setHours(0,0,0,0);
+
+        const diff=(today-d)/(1000*60*60*24);
+
+        switch(AppState.leadsDateFilter){
+
+            case "yesterday":
+                return diff===1;
+
+            case "week":
+                return diff>=0 && diff<=7;
+
+            case "15days":
+                return diff>=0 && diff<=15;
+
+            case "month":
+                return diff>=0 && diff<=30;
+
+            case "3months":
+                return diff>=0 && diff<=90;
+
+            default:
+                return true;
+
+        }
+
+    });
+
+}
+
+function renderDateButtons(){
+
+return `
+<div class="date-filter-bar">
+
+<button class="chip ${AppState.leadsDateFilter==='all'?'active':''}"
+onclick="
+AppState.leadsDateFilter='all';
+render();
+">
+All Time
+</button>
+
+<button class="chip ${AppState.leadsDateFilter==='yesterday'?'active':''}"
+onclick="
+AppState.leadsDateFilter='yesterday';
+render();
+">
+Yesterday
+</button>
+
+<button class="chip ${AppState.leadsDateFilter==='week'?'active':''}"
+onclick="
+AppState.leadsDateFilter='week';
+render();
+">
+Last Week
+</button>
+
+<button class="chip ${AppState.leadsDateFilter==='15days'?'active':''}"
+onclick="
+AppState.leadsDateFilter='15days';
+render();
+">
+Last 15 Days
+</button>
+
+<button class="chip ${AppState.leadsDateFilter==='month'?'active':''}"
+onclick="
+AppState.leadsDateFilter='month';
+render();
+">
+Last Month
+</button>
+
+<button class="chip ${AppState.leadsDateFilter==='3months'?'active':''}"
+onclick="
+AppState.leadsDateFilter='3months';
+render();
+">
+Last 3 Months
+</button>
+
+</div>
+`;
+
+}
+
 /* =====================================================================================
    ALL ASSIGNED LEADS
 ===================================================================================== */
 function renderAllLeadsView() {
-  const total = LEADS.length;
-  const totalHandled = LEADS.filter((l) => !isOpenLead(l) || statusIn(l.status, ['Scheduled'])).length;
-  const converted = LEADS.filter((l) => statusIn(l.status, ENQUIRY_STATUSES)).length;
-  const notInterested = LEADS.filter((l) => statusIn(l.status, ['Not Interested'])).length;
-  const invalid = LEADS.filter((l) => statusIn(l.status, ['Invalid'])).length;
-  const unreachable = LEADS.filter((l) => statusIn(l.status, ['Unreachable'])).length;
+  // const total = LEADS.length;
+  const filteredLeads = getFilteredLeadsByDate();
+  const total = filteredLeads.length;
+  const totalHandled = filteredLeads.filter(
+    (l) => !isOpenLead(l) || statusIn(l.status, ['Scheduled'])
+  ).length;
+  const converted = filteredLeads.filter((l) => statusIn(l.status, ENQUIRY_STATUSES)).length;
+  const notInterested = filteredLeads.filter((l) => statusIn(l.status, ['Not Interested'])).length;
+  const invalid = filteredLeads.filter((l) => statusIn(l.status, ['Invalid'])).length;
+  const unreachable = filteredLeads.filter((l) => statusIn(l.status, ['Unreachable'])).length;
   const rate = total ? ((converted / total) * 100).toFixed(1) : '0.0';
 
-  let list = LEADS.filter((l) => {
+  let list = filteredLeads.filter((l) => {
     if (AppState.leadsAllFilter === 'all') return true;
     if (AppState.leadsAllFilter === 'active') return isOpenLead(l);
     if (AppState.leadsAllFilter === 'converted') return statusIn(l.status, ENQUIRY_STATUSES);
@@ -152,13 +313,17 @@ function renderAllLeadsView() {
 
   return `
     <button class="link-btn" style="margin-bottom:14px;" onclick="AppState.leadsAllView=false; render();">← Back to Leads Dashboard</button>
+    ${renderDateButtons()} 
     <div class="page-head">
+       
       <div><h1>All Assigned Leads</h1></div>
+      
       <div style="display:flex;gap:10px;align-items:center;">
         <div class="date-badge">Total: ${total.toLocaleString()}</div>
         <button class="export-btn" onclick="toast('Exporting current filtered list as CSV…','info')">Export List</button>
       </div>
     </div>
+    
     <div class="counters cols-4" style="margin-bottom:14px;">
       <div class="ccard"><div class="label">Total Assigned</div><div class="value">${total}</div></div>
       <div class="ccard warn"><div class="label">Total Handled</div><div class="value">${totalHandled}</div></div>
@@ -170,12 +335,14 @@ function renderAllLeadsView() {
       <div class="ccard"><div class="label">Invalid</div><div class="value">${invalid}</div></div>
       <div class="ccard"><div class="label">Unreachable</div><div class="value">${unreachable}</div></div>
     </div>
+    
+
     <div class="filters-row" style="margin-top:20px;">
       ${[['active', 'Active'], ['converted', 'Converted'], ['not_interested', 'Not Interested'], ['invalid', 'Invalid'], ['unreachable', 'Unreachable'], ['all', 'All']].map(([k, l]) =>
         `<button class="chip ${AppState.leadsAllFilter === k ? 'active' : ''}" onclick="AppState.leadsAllFilter='${k}';render();">${l}</button>`).join('')}
     </div>
     <div class="table-wrap">
-      <table><thead><tr><th>Name &amp; Contact</th><th>Date Received</th><th>Source</th><th>Follow-up / Attempt</th><th>Current Status</th><th>Assigned To</th><th>Actions</th></tr></thead>
+      <table><thead><tr><th>Name &amp; Contact</th><th>Date Received</th><th>Source</th><th>Last Attempt</th><th>Current Status</th><th>Assigned To</th><th>Actions</th></tr></thead>
       <tbody>${rows}</tbody></table>
     </div>`;
 }

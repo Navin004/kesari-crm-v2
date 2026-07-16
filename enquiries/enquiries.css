@@ -1,4 +1,1213 @@
-/* =====================================================================================
-   ENQUIRIES PAGE — page-specific style overrides  (enquiries/enquiries.css)
-   Loaded after shared/shared.css. Add Enquiries-only tweaks below.
-===================================================================================== */
+/* ==========================================================
+   ENQUIRIES PAGE
+   LAYOUT FOUNDATION
+========================================================== */
+
+html,
+body{
+    min-height:100%;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:#F7F8FB;
+    font-family:"Inter",sans-serif;
+}
+
+.app-shell{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ----------------------------------------------------------
+   PAGE
+---------------------------------------------------------- */
+
+.enquiries-page{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    width:100%;
+    overflow:visible;
+    padding-bottom:32px;
+}
+
+/* ----------------------------------------------------------
+   HEADER
+---------------------------------------------------------- */
+
+.page-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:18px;
+}
+
+.page-head h1{
+    margin:0;
+    font-size:30px;
+    font-weight:800;
+    color:#1F2937;
+}
+
+.page-head p{
+    margin-top:6px;
+    color:#6B7280;
+    font-size:14px;
+}
+
+/* ----------------------------------------------------------
+   KPI CARDS
+---------------------------------------------------------- */
+
+.counters{
+    display:grid;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.cols-3{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.ccard{
+    background:#fff;
+    border:1px solid #E7EAF0;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 6px 16px rgba(15,23,42,.05);
+}
+
+.ccard .label{
+    font-size:12px;
+    text-transform:uppercase;
+    font-weight:700;
+    color:#9CA3AF;
+}
+
+.ccard .value{
+    margin-top:8px;
+    font-size:34px;
+    font-weight:800;
+}
+
+.ccard.good .value{
+    color:#16A34A;
+}
+
+.ccard.bad .value{
+    color:#DC2626;
+}
+
+/* ----------------------------------------------------------
+   MAIN LAYOUT
+---------------------------------------------------------- */
+
+.enquiries-layout{
+
+    flex:1;
+
+    display:grid;
+
+    grid-template-columns:300px 1fr;
+
+    gap:18px;
+
+    overflow:hidden;
+
+    min-height:0;
+
+}
+
+/* ----------------------------------------------------------
+   LEFT SIDEBAR
+---------------------------------------------------------- */
+
+.enquiry-sidebar{
+    display:flex;
+    flex-direction:column;
+    background:#FFFFFF;
+    border:1px solid #E7EAF0;
+    border-radius:18px;
+    overflow:hidden;
+    min-height:0;
+}
+
+/* ----------------------------------------------------------
+   RIGHT CONTENT
+---------------------------------------------------------- */
+
+
+/* ----------------------------------------------------------
+   WORKSPACE
+---------------------------------------------------------- */
+
+.workspace{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+
+    min-height:max-content;
+
+}
+
+
+
+.workspace-left,
+.workspace-right{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar-top{
+    padding:18px;
+    background:#FFFFFF;
+    border-bottom:1px solid #EDF1F5;
+}
+
+/* ==========================================================
+   SEARCH
+========================================================== */
+
+.queue-search{
+    width:100%;
+    height:44px;
+    padding:0 16px;
+    border:1px solid #D8E0EA;
+    border-radius:12px;
+    background:#FAFBFC;
+    font-size:14px;
+    transition:.25s;
+}
+
+.queue-search:focus{
+    outline:none;
+    border-color:#1565C0;
+    background:#FFFFFF;
+    box-shadow:0 0 0 4px rgba(21,101,192,.10);
+}
+
+/* ==========================================================
+   QUEUE SWITCH
+========================================================== */
+
+.queue-switch{
+    display:flex;
+    gap:10px;
+    padding:14px 16px;
+    border-bottom:1px solid #EDF1F5;
+    background:#FFFFFF;
+}
+
+.queue-switch button{
+    flex:1;
+    height:40px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#F3F4F6;
+    color:#4B5563;
+    font-weight:700;
+    font-size:14px;
+    transition:.25s;
+}
+
+.queue-switch button:hover{
+    background:#E5E7EB;
+}
+
+.queue-switch button.active{
+    background:#E85D1F;
+    color:#FFFFFF;
+}
+
+/* ==========================================================
+   QUEUE LIST
+========================================================== */
+
+.queue-list{
+    flex:1;
+    overflow-y:auto;
+    padding:16px;
+    background:#FAFBFC;
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+.queue-list::-webkit-scrollbar{
+    width:8px;
+}
+
+.queue-list::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.queue-list::-webkit-scrollbar-thumb{
+    background:#D2D8DF;
+    border-radius:20px;
+}
+
+.queue-list::-webkit-scrollbar-thumb:hover{
+    background:#B6BDC7;
+}
+
+/* ==========================================================
+   QUEUE CARD
+========================================================== */
+
+.queue-card{
+    background:#FFFFFF;
+    border:1px solid #E5E7EB;
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.queue-card:hover{
+    transform:translateY(-2px);
+    border-color:#CBD5E1;
+    box-shadow:0 12px 28px rgba(15,23,42,.08);
+}
+
+/* ==========================================================
+   ACTIVE CARD
+========================================================== */
+
+.queue-card.active{
+    border-color:#E85D1F;
+    box-shadow:0 0 0 2px rgba(232,93,31,.18);
+}
+
+/* ==========================================================
+   CUSTOMER NAME
+========================================================== */
+
+.queue-name{
+    font-size:16px;
+    font-weight:800;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+.queue-mobile{
+    font-size:13px;
+    color:#6B7280;
+    margin-bottom:12px;
+}
+
+/* ==========================================================
+   DESTINATION
+========================================================== */
+
+.queue-destination{
+    font-size:14px;
+    font-weight:700;
+    color:#374151;
+    margin-bottom:14px;
+}
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.queue-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* ==========================================================
+   STATUS PILLS
+========================================================== */
+
+.status-pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:5px 12px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:700;
+    line-height:1;
+}
+
+.status-pill.converted{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+.status-pill.follow-up{
+    background:#EDE9FE;
+    color:#6D28D9;
+}
+
+.status-pill.hot{
+    background:#FEE2E2;
+    color:#B91C1C;
+}
+
+.status-pill.pending{
+    background:#FEF3C7;
+    color:#B45309;
+}
+
+/* ==========================================================
+   OWNER
+========================================================== */
+
+.queue-footer small{
+    font-size:12px;
+    color:#6B7280;
+    font-weight:600;
+}
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.empty-row{
+    padding:40px 20px;
+    text-align:center;
+    color:#9CA3AF;
+    font-size:14px;
+}
+
+/* ==========================================================
+   SIDEBAR ANIMATION
+========================================================== */
+
+.queue-card,
+.queue-switch button,
+.queue-search{
+    transition:
+        background .25s,
+        border .25s,
+        box-shadow .25s,
+        transform .25s;
+}
+
+/* ==========================================================
+   CUSTOMER HEADER
+========================================================== */
+
+.customer-header{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:22px;
+
+    padding:24px;
+
+    background:#FFFFFF;
+
+    border:1px solid #E7EAF0;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 22px rgba(15,23,42,.05);
+
+}
+
+/* ==========================================================
+   AVATAR
+========================================================== */
+
+.customer-avatar{
+
+    width:78px;
+
+    height:78px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#E85D1F,#FF8A4C);
+
+    color:#FFFFFF;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+
+}
+
+/* ==========================================================
+   CUSTOMER INFO
+========================================================== */
+
+.customer-info{
+
+    flex:1;
+
+}
+
+.customer-info h2{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#1F2937;
+
+}
+
+.customer-meta{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:14px;
+
+    margin-top:10px;
+
+    font-size:14px;
+
+    color:#6B7280;
+
+}
+
+.customer-meta span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+/* ==========================================================
+   RIGHT SIDE
+========================================================== */
+
+.customer-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:14px;
+
+}
+
+/* ==========================================================
+   STATUS BADGE
+========================================================== */
+
+.customer-status{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.customer-status .status-pill{
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+/* ==========================================================
+   PRIORITY BADGE
+========================================================== */
+
+.priority-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.priority-high{
+
+    background:#FEE2E2;
+
+    color:#B91C1C;
+
+}
+
+.priority-medium{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+
+}
+
+.priority-low{
+
+    background:#DCFCE7;
+
+    color:#166534;
+
+}
+
+/* ==========================================================
+   QUICK ACTIONS
+========================================================== */
+
+.customer-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:18px;
+
+}
+
+.customer-action{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#F4F6F9;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-size:18px;
+
+}
+
+.customer-action:hover{
+
+    transform:translateY(-2px);
+
+    background:#E9EEF5;
+
+    box-shadow:0 6px 18px rgba(15,23,42,.10);
+
+}
+
+/* ==========================================================
+   PROGRESS TRACKER
+========================================================== */
+
+
+
+
+
+.progress-step-title{
+
+    font-size:12px;
+
+    color:#6B7280;
+
+    margin-bottom:4px;
+
+}
+
+.progress-step-value{
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#374151;
+
+}
+
+/* ==========================================================
+BOOKING PROGRESS
+========================================================== */
+
+.progress-wrap{
+
+    display:flex;
+
+    gap:16px;
+
+    margin-top:10px;
+
+}
+
+.progress-step{
+
+    flex:1;
+
+    background:#F3F4F6;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    text-align:center;
+
+    font-weight:700;
+
+    color:#6B7280;
+
+    transition:.3s;
+
+}
+
+.progress-step.done{
+
+    background:#DCFCE7;
+
+    color:#166534;
+
+    border:1px solid #86EFAC;
+
+}
+
+.progress-step.done .progress-step-value{
+
+    color:#166534;
+
+}
+
+.progress-step.active{
+
+    background:#DBEAFE;
+
+}
+
+.progress-step.active .progress-step-value{
+
+    color:#1D4ED8;
+
+}
+
+/* ==========================================================
+   CUSTOMER STATS
+========================================================== */
+
+.customer-stats{
+
+    display:flex;
+
+    gap:16px;
+
+    margin-top:18px;
+
+}
+
+.customer-stat{
+
+    background:#F8FAFC;
+
+    border-radius:12px;
+
+    padding:14px 18px;
+
+    min-width:110px;
+
+    text-align:center;
+
+}
+
+.customer-stat-value{
+
+    font-size:22px;
+
+    font-weight:800;
+
+    color:#1F2937;
+
+}
+
+.customer-stat-label{
+
+    margin-top:4px;
+
+    font-size:12px;
+
+    color:#6B7280;
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:900px){
+
+.customer-header{
+
+    flex-direction:column;
+
+}
+
+.customer-right{
+
+    width:100%;
+
+    align-items:flex-start;
+
+}
+
+.customer-actions{
+
+    flex-wrap:wrap;
+
+}
+
+.customer-stats{
+
+    flex-wrap:wrap;
+
+}
+
+}
+/* neww */
+/* ==========================================================
+CUSTOMER HEADER V2
+========================================================== */
+
+.customer-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#fff;
+
+    border:1px solid #E5E7EB;
+
+    border-radius:18px;
+
+    padding:24px;
+
+    margin-bottom:24px;
+
+}
+
+.customer-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.customer-avatar{
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#ff8a3d,#f15a24);
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    flex-shrink:0;
+
+}
+
+.customer-details h2{
+
+    margin:0;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+.customer-meta{
+
+    margin-top:10px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:18px;
+
+    color:#6B7280;
+
+    font-size:14px;
+
+}
+
+.customer-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:16px;
+
+}
+
+.customer-badges{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.quick-actions{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.quick-actions button{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    border:1px solid #E5E7EB;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.25s;
+
+}
+
+.quick-actions button:hover{
+
+    background:#F5F7FA;
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================================
+WORKSPACE V2
+========================================================== */
+
+.workspace{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+.workspace-grid{
+
+    display:grid;
+
+    grid-template-columns:1.2fr 0.8fr;
+
+    gap:22px;
+
+    align-items:start;
+
+}
+.workspace-left,
+.workspace-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+    min-width:0;
+
+}
+
+.detail-card{
+
+    background:#fff;
+
+    border:1px solid #E5E7EB;
+
+    border-radius:18px;
+
+    padding:22px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.04);
+
+}
+
+.detail-title{
+
+    font-size:16px;
+
+    font-weight:700;
+
+    margin-bottom:20px;
+
+    color:#1F2937;
+
+}
+
+.detail-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px;
+
+}
+
+.detail-grid label{
+
+    display:block;
+
+    font-size:12px;
+
+    color:#6B7280;
+
+    margin-bottom:6px;
+
+    text-transform:uppercase;
+
+}
+
+.detail-grid p{
+
+    margin:0;
+
+    font-weight:600;
+
+    color:#111827;
+
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:14px;
+}
+
+.stat-box{
+    background:#F8FAFC;
+    border:1px solid #E5E7EB;
+    border-radius:14px;
+    padding:16px;
+    min-height:96px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.stat-value{
+    font-size:24px;
+    font-weight:800;
+    color:#111827;
+    line-height:1.1;
+}
+
+.stat-label{
+    margin-top:6px;
+    font-size:12px;
+    font-weight:700;
+    color:#6B7280;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+}
+
+@media(max-width:1100px){
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* ==========================================================
+TIMELINE
+========================================================== */
+
+.timeline{
+
+    position:relative;
+
+    margin-top:12px;
+
+    padding-left:24px;
+
+}
+
+.timeline::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:9px;
+
+    top:8px;
+
+    bottom:8px;
+
+    width:2px;
+
+    background:#E5E7EB;
+
+}
+
+.timeline-item{
+
+    position:relative;
+
+    display:flex;
+
+    gap:16px;
+
+    margin-bottom:22px;
+
+}
+
+.timeline-item:last-child{
+
+    margin-bottom:0;
+
+}
+
+.timeline-dot{
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    background:#D1D5DB;
+
+    border:3px solid #fff;
+
+    box-shadow:0 0 0 2px #E5E7EB;
+
+    flex-shrink:0;
+
+    z-index:2;
+
+}
+
+.timeline-item.done .timeline-dot{
+
+    background:#22C55E;
+
+    box-shadow:0 0 0 2px #22C55E;
+
+}
+
+.timeline-content{
+
+    flex:1;
+
+}
+
+.timeline-title{
+
+    font-weight:700;
+
+    color:#1F2937;
+
+    margin-bottom:4px;
+
+}
+
+.timeline-time{
+
+    font-size:13px;
+
+    color:#6B7280;
+
+}
+
+.detail-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:30px;
+
+    padding-top:18px;
+
+    border-top:1px solid #E5E7EB;
+
+}
